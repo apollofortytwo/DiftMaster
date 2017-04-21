@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.physics.bullet.collision.btBoxShape;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionShape;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
@@ -19,22 +20,28 @@ class GameObject extends ModelInstance implements Disposable {
 	static ModelBuilder mb = new ModelBuilder();
 	btRigidBodyConstructionInfo constructionInfo;
 	btRigidBody body;
-	public Vector3 position;
 	public MyMotionState motionState;
-
+	BoundingBox bounds;
+	Vector3 position = new Vector3();
+	
 	public GameObject(Model model, btRigidBodyConstructionInfo constructionInfo, Vector3 position) {
 		super(model);
+
+		bounds = new BoundingBox();
+		this.calculateBoundingBox(bounds);
+
 		this.constructionInfo = constructionInfo;
 		this.body = new btRigidBody(constructionInfo);
-		this.position = position;
 		
 		motionState = new MyMotionState();
+		
+		this.transform.setTranslation(position);
 		motionState.transform = this.transform;
 		
 		this.body.setMotionState(motionState);
-		this.transform.trn(position);
 		this.body.proceedToTransform(this.transform);
 		
+
 
 
 	}

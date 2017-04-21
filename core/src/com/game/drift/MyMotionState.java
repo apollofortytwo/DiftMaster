@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.bullet.linearmath.btMotionState;
  *
  */
 class MyMotionState extends btMotionState {
-	public Matrix4 transform;
+	public Matrix4 transform = new Matrix4();
 
 	@Override
 	public void getWorldTransform(Matrix4 worldTrans) {
